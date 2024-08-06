@@ -57,49 +57,36 @@ def map_column_type(mysql_type):
 '''
 def generate_code(table_structure, package_name):
     table_name, columns = parse_table_structure(table_structure)
+    # 读取类名、包名配置
+    class_name, entity_name, mapper_name, service_name, service_impl_name = name_read(table_name, package_name)
     
+    # 读取模板文件夹中的所有模板并渲染
+    codeContent = template_read(class_name, columns, entity_name, mapper_name, service_name, service_impl_name)
+
+    # 将生成的代码写入文件
+    code_list = ["{class_name}.java", "{class_name}Mapper.java", "{class_name}Service.java", "{class_name}ServiceImpl.java"]
+    for code, content in zip(code_list, codeContent):
+        file_path = code.format(class_name=class_name)
+        with open(file_path, 'w') as f:
+            f.write(content)
+ 
+'''
+从配置文件中读取类名、包名等信息
+'''    
+def name_read(table_name, package_name):
     default_class_name = ''.join(word.capitalize() for word in table_name.split('_'))
-    print(package_name)
     class_name = default_class_name if package_name.get('class_name') == '' else package_name.get('class_name')
-    print(class_name)
     entity_name = package_name.get('entity_name')
     mapper_name = package_name.get('mapper_name')
     service_name = package_name.get('service_name')
     service_impl_name = package_name.get('service_impl_name')
     
-    bean_template, mapper_template, service_template, service_impl_template = template_read()
-
-    bean_code = Template(bean_template).render(entity_name=entity_name, class_name=class_name, columns=columns)
-    mapper_code = Template(mapper_template).render(mapper_name=mapper_name, entity_name=entity_name, class_name=class_name)
-    service_code = Template(service_template).render(service_name=service_name, entity_name=entity_name, class_name=class_name)
-    service_impl_code = Template(service_impl_template).render(service_impl_name=service_impl_name, entity_name=entity_name, 
-                                                               mapper_name=mapper_name, service_name=service_name, class_name=class_name)
-
-    with open(f"{class_name}.java", 'w') as f:
-        print(f"Generated code for {class_name}:")
-        f.write(bean_code)
-
-    with open(f"{class_name}Mapper.java", 'w') as f:
-        print(f"Generated code for {class_name}Mapper:")
-        f.write(mapper_code)
-
-    with open(f"{class_name}Service.java", 'w') as f:
-        print(f"Generated code for {class_name}Service:")
-        f.write(service_code)
-
-    with open(f"{class_name}ServiceImpl.java", 'w') as f:
-        print(f"Generated code for {class_name}ServiceImpl:")
-        f.write(service_impl_code)
-        
+    return class_name, entity_name, mapper_name, service_name, service_impl_name
+   
 '''
 从模板文件夹中读取所有模板
 '''    
-def template_read():
-    bean_template = None
-    mapper_template = None
-    service_template = None
-    service_impl_template = None
-    
+def template_read(class_name, columns, entity_name, mapper_name, service_name, service_impl_name):
     with open('jinja_template/bean.jinja', 'r') as f:
         bean_template = f.read()
         
@@ -111,8 +98,14 @@ def template_read():
         
     with open('jinja_template/service_impl.jinja', 'r') as f:
         service_impl_template = f.read()
+        
+    bean_code = Template(bean_template).render(entity_name=entity_name, class_name=class_name, columns=columns)
+    mapper_code = Template(mapper_template).render(mapper_name=mapper_name, entity_name=entity_name, class_name=class_name)
+    service_code = Template(service_template).render(service_name=service_name, entity_name=entity_name, class_name=class_name)
+    service_impl_code = Template(service_impl_template).render(service_impl_name=service_impl_name, entity_name=entity_name, 
+                                                               mapper_name=mapper_name, service_name=service_name, class_name=class_name)
     
-    return bean_template, mapper_template, service_template, service_impl_template
+    return [bean_code, mapper_code, service_code, service_impl_code]
 
 if __name__ == "__main__":
     # 读取表结构
