@@ -23,7 +23,7 @@ def parse_table_structure(table_structure, is_camel_case = True):
     for column_name, column_type in column_matches:
         if is_camel_case:
             column_name = to_camel_case(column_name)
-        columns.append({'name': column_name, 'type': map_column_type(column_type)})
+        columns.append({'name': column[0], 'type': map_column_type(column[1]), 'comment': comment or ''})
 
     return table_name, columns
 
