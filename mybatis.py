@@ -59,7 +59,9 @@ def generate_code(table_structure, package_name):
     table_name, columns = parse_table_structure(table_structure)
     
     default_class_name = ''.join(word.capitalize() for word in table_name.split('_'))
-    class_name = default_class_name if package_name.get('class_name') is None else package_name.get('class_name')
+    print(package_name)
+    class_name = default_class_name if package_name.get('class_name') == '' else package_name.get('class_name')
+    print(class_name)
     entity_name = package_name.get('entity_name')
     mapper_name = package_name.get('mapper_name')
     service_name = package_name.get('service_name')

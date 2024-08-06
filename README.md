@@ -7,7 +7,7 @@ package.json配置
 - mapper_name: mapper类包名
 - service_name: service类包名
 - service_impl_name: service实现类包名
-- table_name: 表名
+- class_name: 类名
 
 table_sql配置
 - 建表语句
