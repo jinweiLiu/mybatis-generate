@@ -1,31 +1,8 @@
-import re
 import json
 import os
 from jinja2 import Template
-from tools.parse import to_camel_case, map_column_type, isBlank, notBlank
-
-'''
-解析数据库表结构，返回表名和列信息
-'''
-def parse_table_structure(table_structure, is_camel_case = True):
-    # 读取表名
-    table_name_match = re.search(r'create table `(\w+)`', table_structure)
-    if not table_name_match:
-        raise ValueError("表结构中未找到表名")
-    
-    table_name = table_name_match.group(1)
-    columns = []
-    
-    column_matches = re.findall(r'`(\w+)`\s+(\w+)', table_structure)
-    if not column_matches:
-        raise ValueError("表结构中未找到任何列")
-    
-    for column_name, column_type in column_matches:
-        if is_camel_case:
-            column_name = to_camel_case(column_name)
-        columns.append({'name': column[0], 'type': map_column_type(column[1]), 'comment': comment or ''})
-
-    return table_name, columns
+from tools.tool import isBlank, notBlank
+from tools.sql_parse import parse_table_structure
 
 '''
 生成代码
@@ -54,6 +31,7 @@ def generate_code(table_structure, config_data):
             file_path = os.path.join(output_dir, file_path)
         with open(file_path, 'w') as f:
             f.write(content)
+            print(f"已成功生成代码：{file_path}")
  
 '''
 从配置文件中读取类名、包名等信息
