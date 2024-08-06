@@ -1,0 +1,18 @@
+package {{ entity_name }};
+
+public class {{ class_name }} {
+{% for column in columns %}
+    private {{ column['type'] }} {{ column['name'] }};
+{% endfor %}
+
+    // getters and setters
+{% for column in columns %}
+    public {{ column['type'] }} get{{ column['name'][0].upper() + column['name'][1:] }}() {
+        return {{ column['name'] }};
+    }
+
+    public void set{{ column['name'][0].upper() + column['name'][1:] }}({{ column['type'] }} {{ column['name'] }}) {
+        this.{{ column['name'] }} = {{ column['name'] }};
+    }
+{% endfor %}
+}

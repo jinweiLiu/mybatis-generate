@@ -1,0 +1,7 @@
+{
+    "entity_name": "com.example.entity",
+    "mapper_name": "com.example.mapper",
+    "service_name": "com.example.service",
+    "service_impl_name": "com.example.service.impl",
+    "table_name": ""
+}

@@ -1,0 +1,14 @@
+package {{ service_impl_name }};
+
+import {{ entity_name }}.{{ class_name }};
+import {{ mapper_name }}.{{ class_name }}Mapper;
+import {{ service_name }}.{{ class_name }}Service;
+import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import groovy.util.logging.Slf4j;
+import org.springframework.stereotype.Service;
+
+@Service
+@Slf4j
+public class {{ class_name }}ServiceImpl extends ServiceImpl<{{ class_name }}Mapper, {{ class_name }}>
+        implements {{ class_name }}Service {
+}
