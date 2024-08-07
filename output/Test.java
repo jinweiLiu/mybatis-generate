@@ -44,7 +44,7 @@ public class Test {
 
 
     /**
-     * 
+     * 创建时间
      */
     private Date createdAt;
 
