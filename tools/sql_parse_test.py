@@ -1,19 +1,22 @@
 import re
 
 sql = """
-CREATE TABLE `user` ( 
-  `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '主键ID', 
-  `username` varchar(255) NOT NULL COMMENT '用户名' default '',
-  `password` varchar(255) DEFAULT NULL COMMENT  '用户密码',
-  `email` varchar(255) DEFAULT 'ddd'  COMMENT '邮件',
-  `phone` char(32)  DEFAULT '',
-  `created_at` datetime not null  default current_timestamp() COMMENT '创建时间',
+CREATE TABLE `user` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(255) DEFAULT NULL COMMENT '用户名',
+  `password` varchar(255) DEFAULT NULL COMMENT '用户密码',
+  `email` varchar(255)   COMMENT '邮件' DEFAULT '' ,
+  `created_at` datetime DEFAULT CURRENT_TIME() COMMENT '创建时间',
   PRIMARY KEY (`id`)
-);
+)
 """
 
 # 定义正则表达式模式
-pattern_str = r"`(\w+)`\s+(\w+\(\d+\)|\w+)\s*((DEFAULT\s+\S+|null|not\s+null|default\s+null|auto_increment|unsigned)\s+)*(?:\s*comment\s+'([^']+)')*"
+name_type_pattern = r"`(\w+)`\s+(\w+\(\d+\)|\w+)\s*"
+attribute_pattern = r"((DEFAULT\s+\S+|null|not|auto_increment|unsigned|on|update|\w+\(\d*\))\s+)*"
+comment_pattern = r"(?:\s*comment\s+'([^']+)')*"
+
+pattern_str = name_type_pattern + attribute_pattern + comment_pattern
 
 # 使用正则表达式查找匹配项
 field_pattern = re.compile(pattern_str, re.IGNORECASE)

@@ -13,8 +13,14 @@ def parse_table_structure(table_structure, is_camel_case = True):
     table_name = table_name_match.group(1)
     columns = []
     
+    
+    # 定义正则表达式模式
+    name_type_pattern = r"`(\w+)`\s+(\w+\(\d+\)|\w+)\s*"
+    attribute_pattern = r"((DEFAULT\s+\S+|null|not|auto_increment|unsigned|on|update|\w+\(\d*\))\s+)*"
+    comment_pattern = r"(?:\s*comment\s+'([^']+)')*"
+
     # 匹配列信息
-    pattern_str = pattern_str = r"`(\w+)`\s+(\w+\(\d+\)|\w+)\s*((DEFAULT\s+\S+|null|not\s+null|default\s+null|auto_increment|unsigned)\s+)*(?:\s*comment\s+'([^']+)')*"
+    pattern_str = name_type_pattern + attribute_pattern + comment_pattern
     field_pattern = re.compile(pattern_str, re.IGNORECASE)
     fields = field_pattern.findall(table_structure)
     if not fields:

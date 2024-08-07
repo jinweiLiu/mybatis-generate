@@ -7,21 +7,12 @@ import java.io.Serializable;
 
 public class {{ class_name }} {
     private static final long serialVersionUID = 1L;
-
 {% for column in columns %}
-{% if column['name'] == 'id' %}
-    /**
-     * 自增id
-     */
-    @TableId(type = IdType.AUTO)
-    private {{ column['type'] }} {{ column['name'] }};
-{% else %}
     /**
      * {{column['comment']}}
      */
+    {%- if column['name'] == 'id' -%}@TableId(type = IdType.AUTO){%- endif %}
     private {{ column['type'] }} {{ column['name'] }};
-{% endif %}
-
 {% endfor %}
 
     // getters and setters
