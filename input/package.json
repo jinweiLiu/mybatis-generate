@@ -3,6 +3,6 @@
     "mapper_name": "com.example.mapper",
     "service_name": "com.example.service",
     "service_impl_name": "com.example.service.impl",
-    "class_name": "Test",
+    "class_name": "",
     "output_dir":"output"
 }
