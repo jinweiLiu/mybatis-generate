@@ -9,7 +9,9 @@ def to_camel_case(snake_str):
 mysql类型映射为java类型
 '''
 def map_column_type(mysql_type):
-    if 'int' in mysql_type:
+    if 'bigint' in mysql_type:
+        return 'Long'
+    elif 'tinyint' in mysql_type:
         return 'Integer'
     elif 'varchar' in mysql_type or 'text' in mysql_type:
         return 'String'
@@ -17,10 +19,8 @@ def map_column_type(mysql_type):
         return 'Date'
     elif 'double' in mysql_type or 'float' in mysql_type:
         return 'Double'
-    elif 'tinyint' in mysql_type:
+    elif 'int' in mysql_type:
         return 'Integer'
-    elif 'bigint' in mysql_type:
-        return 'Long'
     # 添加其他类型映射
     else:
         return 'String'
