@@ -12,7 +12,9 @@ public class {{ class_name }} implements Serializable {
     /**
      * {{column['comment']}}
      */
-    {%- if column['name'] == 'id' -%}@TableId(type = IdType.AUTO){%- endif %}
+    {%- if column['name'] == 'id' %}
+    @TableId(type = IdType.AUTO)
+    {%- endif %}
     private {{ column['type'] }} {{ column['name'] }};
 {% endfor %}
 
